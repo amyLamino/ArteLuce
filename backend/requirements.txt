@@ -1,0 +1,5 @@
+# (chemin : /backend/requirements.txt)
+Django>=5.0
+djangorestframework>=3.15
+django-cors-headers>=4.3
+python-docx

@@ -1,0 +1,18 @@
+# Virtual environments
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Node / Web
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+.next/
+dist/
+build/
+
+# Environment variables
+.env

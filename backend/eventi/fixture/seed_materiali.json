@@ -1,0 +1,50 @@
+[
+  {
+    "model": "eventi.materiale",
+    "pk": 1,
+    "fields": {
+      "nome": "Proiettore 5k",
+      "prezzo_base": "55.00",
+      "categoria": "Video",
+      "sottocategoria": "Proiettori",
+      "is_tecnico": false,
+      "is_messo": false
+    }
+  },
+  {
+    "model": "eventi.materiale",
+    "pk": 2,
+    "fields": {
+      "nome": "Schermo 3m",
+      "prezzo_base": "40.00",
+      "categoria": "Video",
+      "sottocategoria": "Schermi",
+      "is_tecnico": false,
+      "is_messo": false
+    }
+  },
+  {
+    "model": "eventi.materiale",
+    "pk": 3,
+    "fields": {
+      "nome": "Tecnico audio",
+      "prezzo_base": "120.00",
+      "categoria": "Servizi",
+      "sottocategoria": "Tecnici",
+      "is_tecnico": true,
+      "is_messo": false
+    }
+  },
+  {
+    "model": "eventi.materiale",
+    "pk": 4,
+    "fields": {
+      "nome": "Messo facchino",
+      "prezzo_base": "90.00",
+      "categoria": "Servizi",
+      "sottocategoria": "Messi",
+      "is_tecnico": false,
+      "is_messo": true
+    }
+  }
+]
