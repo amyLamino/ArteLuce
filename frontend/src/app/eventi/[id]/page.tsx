@@ -167,9 +167,7 @@ function humanDiffGrouped(a?: Partial<Evento>, b?: Partial<Evento>): DiffGroups 
 
 /* ---------- Chargement événement & révisions ---------- */
 function normalizeRevisions(data: any): Revision[] {
-  const raw = Array.isArray(data)
-    ? data
-    : data?.results ?? data?.items ?? [];
+  const raw = Array.isArray(data) ? data : data?.results ?? data?.items ?? [];
   const out: Revision[] = raw.map((it: any, idx: number) => {
     const p = it.payload ?? it.data ?? it.evento ?? {};
     const payload: Partial<Evento> = {
@@ -668,9 +666,7 @@ export default function EventoPage() {
             ev.cliente_nome || (ev.cliente ? `#${ev.cliente}` : "")
           );
           setLuogoId(ev.luogo);
-          setLuogoLabel(
-            ev.luogo_nome || (ev.luogo ? `#${ev.luogo}` : "")
-          );
+          setLuogoLabel(ev.luogo_nome || (ev.luogo ? `#${ev.luogo}` : ""));
           setNote(ev.note || "");
           setCatNotes(ev.categoria_notes || {});
         },
@@ -738,33 +734,33 @@ export default function EventoPage() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 rounded-2xl border border-slate-200 bg-white/90 p-5 shadow-sm">
       {/* header : titre + boutons */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between border-b border-slate-200 pb-3 mb-3">
         <div>
           <h1 className="text-2xl font-semibold flex items-center gap-2">
             {titolo || e.titolo}
             <EventoMultiDayPill evento={e as any} />
           </h1>
-          <div className="text-sm text-slate-600 mt-1">
+          <div className="text-sm text-slate-800 mt-1">
             {dayjs(e.data_evento).format("DD/MM/YYYY")} • Location L
             {e.location_index}
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2 justify-end">
           <a
             href={`${API}/eventi/${id}/docx/`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-3 py-2 border rounded-none bg-white hover:bg-slate-50 text-sm"
+            className="inline-flex items-center px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
           >
             Scarica preventivo Word
           </a>
 
           {mode !== "history" ? (
             <button
-              className="px-3 py-2 border rounded-none"
+              className="px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
               onClick={async () => {
                 const latest = await loadRevisions(id);
                 setRevs(latest);
@@ -778,7 +774,7 @@ export default function EventoPage() {
             </button>
           ) : (
             <button
-              className="px-3 py-2 border rounded-none"
+              className="px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
               onClick={() => setMode("view")}
             >
               Chiudi storico
@@ -788,13 +784,13 @@ export default function EventoPage() {
           {mode === "view" ? (
             <>
               <button
-                className="px-3 py-2 border rounded-none"
+                className="px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
                 onClick={openEdit}
               >
                 Apri evento (éditer)
               </button>
               <button
-                className="px-3 py-2 border rounded-none text-rose-600"
+                className="px-3 py-2 rounded-full border border-rose-200 bg-white text-sm text-rose-600 hover:bg-rose-50"
                 onClick={() => deleteEvento(e.id)}
               >
                 Elimina
@@ -805,14 +801,14 @@ export default function EventoPage() {
           {mode === "edit" ? (
             <>
               <button
-                className="px-3 py-2 border rounded-none"
+                className="px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
                 onClick={cancelEdit}
                 disabled={saving}
               >
                 Annulla
               </button>
               <button
-                className="px-3 py-2 bg-black text-white rounded-none"
+                className="px-3 py-2 rounded-full bg-black text-white text-sm hover:bg-slate-900 disabled:opacity-60"
                 onClick={save}
                 disabled={saving}
               >
@@ -820,7 +816,7 @@ export default function EventoPage() {
               </button>
 
               <button
-                className="px-3 py-2 border rounded-none"
+                className="px-3 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
                 onClick={() => setShowNewCliente(true)}
               >
                 Nuovo cliente
@@ -831,17 +827,17 @@ export default function EventoPage() {
       </div>
 
       {/* Barre ANAGRAFE */}
-      <div className="p-3 bg-slate-50 border rounded-none space-y-2">
+      <div className="px-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl space-y-3 text-sm text-slate-900">
         <div className="flex flex-wrap items-center gap-6">
           <div className="flex items-center gap-2">
-            <span className="text-sm">Cliente</span>
-            <span className="px-2 py-1 border bg-white rounded-none">
+            <span className="font-medium">Cliente</span>
+            <span className="px-2 py-1 rounded-full border border-slate-300 bg-white">
               {clienteLabel || (clienteId ? `#${clienteId}` : "—")}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm">Luogo</span>
-            <span className="px-2 py-1 border bg-white rounded-none">
+            <span className="font-medium">Luogo</span>
+            <span className="px-2 py-1 rounded-full border border-slate-300 bg-white">
               {luogoLabel || (luogoId ? `#${luogoId}` : "—")}
             </span>
           </div>
@@ -851,15 +847,15 @@ export default function EventoPage() {
       {mode !== "history" ? (
         <>
           {/* colonnes : infos + devis */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1.25fr)]">
             {/* Infos */}
             <div className="space-y-3">
-              <div className="flex items-center gap-3">
+              <div className="flex flex-wrap items-center gap-3">
                 <div className="flex items-center gap-2">
                   <StatoPill v={stato} />
                   {mode === "edit" ? (
                     <select
-                      className="border rounded-none px-2 py-1"
+                      className="border border-slate-300 rounded-md px-2 py-1 text-sm bg-white"
                       value={stato}
                       onChange={(ev) =>
                         setStato(ev.target.value as Evento["stato"])
@@ -875,25 +871,23 @@ export default function EventoPage() {
                   )}
                 </div>
 
-                <div className="ml-4 flex items-center gap-2">
-                  <span className="text-sm text-slate-600">Acconto:</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-sm text-slate-800">Acconto:</span>
                   {mode === "edit" ? (
                     <>
                       <input
                         type="number"
                         step="0.01"
                         min={0}
-                        className="border rounded-none w-28 text-right px-2 py-1"
+                        className="border border-slate-300 rounded-md w-28 text-right px-2 py-1 text-sm"
                         value={acconto}
                         onChange={(ev) => setAcconto(ev.target.value)}
                       />
                       <input
                         type="date"
-                        className="border rounded-none px-2 py-1"
+                        className="border border-slate-300 rounded-md px-2 py-1 text-sm"
                         value={accontoData}
-                        onChange={(ev) =>
-                          setAccontoData(ev.target.value)
-                        }
+                        onChange={(ev) => setAccontoData(ev.target.value)}
                       />
                     </>
                   ) : (
@@ -911,7 +905,7 @@ export default function EventoPage() {
                 <span className="text-sm">Titre</span>
                 <input
                   disabled={mode === "view"}
-                  className="mt-1 w-full border rounded-none px-2 py-1"
+                  className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent/70"
                   value={titolo}
                   onChange={(ev) => setTitolo(ev.target.value)}
                 />
@@ -922,7 +916,7 @@ export default function EventoPage() {
                 <input
                   disabled={mode === "view" || isPast}
                   type="date"
-                  className="mt-1 w-full border rounded-none px-2 py-1"
+                  className="mt-1 w-full rounded-md border border-slate-300 px-2 py-1 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-brand-accent/70"
                   value={dataEvento}
                   onChange={(ev) => setDataEvento(ev.target.value)}
                 />
@@ -941,33 +935,26 @@ export default function EventoPage() {
             </div>
 
             {/* Lignes + Devis groupé */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               {/* Lignes “brutes” */}
-              <div className="border rounded-none bg-white">
+              <div className="border border-slate-200 rounded-xl bg-white">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="bg-slate-50">
-                      <th className="text-left px-2 py-1">
-                        Matériel
-                      </th>
+                      <th className="text-left px-2 py-1">Matériel</th>
                       <th className="text-center px-2 py-1">Qté</th>
                       <th className="text-right px-2 py-1">PU</th>
-                      <th className="text-right px-2 py-1">
-                        Importo
-                      </th>
+                      <th className="text-right px-2 py-1">Importo</th>
                       <th className="text-right px-2 py-1"></th>
                     </tr>
                   </thead>
                   <tbody>
                     {righe.map((r, i) => (
-                      <tr
-                        key={`${r.materiale}-${i}`}
-                        className="border-t"
-                      >
+                      <tr key={`${r.materiale}-${i}`} className="border-t">
                         <td className="px-2 py-1">
                           {r.materiale_nome || `#${r.materiale}`}{" "}
                           {r.is_tecnico ? (
-                            <span className="ml-2 text-[10px] border px-1">
+                            <span className="ml-2 text-[10px] border px-1 rounded-full">
                               tecnico
                             </span>
                           ) : null}
@@ -979,7 +966,7 @@ export default function EventoPage() {
                             <input
                               type="number"
                               min={0}
-                              className="border rounded-none w-20 text-right px-1"
+                              className="border border-slate-300 rounded-md w-20 text-right px-1 text-sm"
                               value={r.qta}
                               onChange={(ev) => {
                                 const v = Number(ev.target.value);
@@ -998,28 +985,23 @@ export default function EventoPage() {
                             <input
                               type="number"
                               step="0.01"
-                              className="border rounded-none w-24 text-right px-1"
+                              className="border border-slate-300 rounded-md w-24 text-right px-1 text-sm"
                               value={r.prezzo}
                               onChange={(ev) =>
                                 updateRiga(i, {
-                                  prezzo:
-                                    Number(
-                                      ev.target.value
-                                    ) || 0,
+                                  prezzo: Number(ev.target.value) || 0,
                                 })
                               }
                             />
                           )}
                         </td>
                         <td className="text-right px-2 py-1">
-                          {(
-                            Number(r.qta) * Number(r.prezzo)
-                          ).toFixed(2)}
+                          {(Number(r.qta) * Number(r.prezzo)).toFixed(2)}
                         </td>
                         <td className="text-right px-2 py-1">
                           {mode === "edit" ? (
                             <button
-                              className="px-2 py-1 border rounded-none"
+                              className="px-2 py-1 text-xs rounded-full border border-slate-300 bg-white hover:bg-slate-50"
                               onClick={() => removeRiga(i)}
                             >
                               Supprimer
@@ -1051,7 +1033,7 @@ export default function EventoPage() {
               ) : null}
 
               {/* PREVENTIVO raggruppato + Note par catégorie */}
-              <div className="border rounded-none bg-white">
+              <div className="border border-slate-200 rounded-xl bg-white">
                 <div className="px-3 py-2 font-semibold">
                   Preventivo (raggruppato)
                 </div>
@@ -1071,9 +1053,9 @@ export default function EventoPage() {
                         return (
                           <section
                             key={cat}
-                            className="border rounded-none"
+                            className="border border-slate-200 rounded-xl bg-slate-50/70"
                           >
-                            <div className="px-2 py-1 bg-slate-50 font-medium">
+                            <div className="px-2 py-1 bg-slate-100 font-medium">
                               {cat}
                             </div>
 
@@ -1083,10 +1065,7 @@ export default function EventoPage() {
                                 0
                               );
                               return (
-                                <div
-                                  key={sub}
-                                  className="border-t"
-                                >
+                                <div key={sub} className="border-t">
                                   <div className="px-2 py-1 text-sm text-slate-600 italic">
                                     {sub}
                                   </div>
@@ -1110,19 +1089,14 @@ export default function EventoPage() {
                                     <tbody>
                                       {items
                                         .sort((a, b) =>
-                                          a.nome.localeCompare(
-                                            b.nome
-                                          )
+                                          a.nome.localeCompare(b.nome)
                                         )
                                         .map((it, i) => (
-                                          <tr
-                                            key={i}
-                                            className="border-t"
-                                          >
+                                          <tr key={i} className="border-t">
                                             <td className="px-2 py-1">
                                               {it.nome}
                                               {it.is_tecnico ? (
-                                                <span className="ml-2 text-[10px] px-1 border rounded-none">
+                                                <span className="ml-2 text-[10px] px-1 border rounded-full">
                                                   tecnico
                                                 </span>
                                               ) : null}
@@ -1156,16 +1130,17 @@ export default function EventoPage() {
                             })}
 
                             <div className="px-2 py-1 bg-slate-100 text-right font-semibold">
-                              <span className="mr-1">{cat}:</span> {euro(block.subtot)}
+                              <span className="mr-1">{cat}:</span>{" "}
+                              {euro(block.subtot)}
                             </div>
 
                             {/* Notes par catégorie */}
-                            <div className="px-2 py-2 bg-white border-t">
+                            <div className="px-2 py-2 bg-white border-t border-slate-200">
                               <label className="text-sm font-medium">
                                 Note — {cat}
                               </label>
                               <textarea
-                                className="mt-1 w-full min-h-[60px] border rounded-none px-2 py-1"
+                                className="mt-1 w-full min-h-[60px] border border-slate-300 rounded-md px-2 py-1 text-sm"
                                 placeholder="Note per questa categoria"
                                 value={catNotes[cat] ?? ""}
                                 onChange={(ev) =>
@@ -1194,11 +1169,11 @@ export default function EventoPage() {
               </div>
 
               {/* Note globale */}
-              <div className="bg-white border rounded-none p-3">
+              <div className="border border-slate-200 rounded-xl bg-slate-50/80 p-3">
                 <div className="font-semibold mb-1">Note</div>
                 <textarea
-                  className="w-full min-h-[120px] border rounded-none px-2 py-1"
-                  placeholder="Conditions de règlement, remarques, etc."
+                  className="w-full min-h-[120px] border border-slate-300 rounded-md px-2 py-1 text-sm"
+                  placeholder="Conditions de règlement, remarques, ecc."
                   value={note}
                   onChange={(e) => setNote(e.target.value)}
                 />
@@ -1208,7 +1183,7 @@ export default function EventoPage() {
 
           <div className="flex gap-2">
             <button
-              className="px-3 py-2 border rounded-none"
+              className="px-4 py-2 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
               onClick={() => router.push("/calendario")}
             >
               ← Retour calendrier
@@ -1217,12 +1192,12 @@ export default function EventoPage() {
         </>
       ) : (
         /* -------- Historique: vue “de → à” -------- */
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <h2 className="text-lg font-semibold">
               Historique des révisions
             </h2>
-            <div className="border rounded-none bg-white max-h-96 overflow-auto">
+            <div className="border border-slate-200 rounded-xl bg-white max-h-96 overflow-auto">
               <table className="w-full text-sm">
                 <thead className="bg-slate-50">
                   <tr>
@@ -1236,21 +1211,16 @@ export default function EventoPage() {
                     <tr key={r.ref} className="border-t">
                       <td className="px-2 py-1">ref{r.ref}</td>
                       <td className="px-2 py-1">
-                        {dayjs(r.created_at).format(
-                          "YYYY-MM-DD HH:mm"
-                        )}
+                        {dayjs(r.created_at).format("YYYY-MM-DD HH:mm")}
                       </td>
                       <td className="px-2 py-1">
                         <button
                           className={
-                            "px-2 py-1 border rounded-none " +
-                            (revSel === r.ref
-                              ? "bg-black text-white"
-                              : "")
+                            "px-2 py-1 text-xs rounded-full border border-slate-300 bg-white hover:bg-slate-50 " +
+                            (revSel === r.ref ? "bg-black text-white" : "")
                           }
                           onClick={async () => {
-                            const latest =
-                              await loadRevisions(id);
+                            const latest = await loadRevisions(id);
                             setRevs(latest);
                             setRevSel(r.ref);
                           }}
@@ -1284,24 +1254,22 @@ export default function EventoPage() {
               {(() => {
                 if (revSel == null || revs.length === 0) {
                   return (
-                    <div className="border rounded-none bg-white p-3 text-sm text-slate-600">
+                    <div className="border border-slate-200 rounded-xl bg-white p-3 text-sm text-slate-600">
                       Sélectionne une révision à gauche…
                     </div>
                   );
                 }
-                const idx = revs.findIndex(
-                  (r) => r.ref === revSel
-                );
+                const idx = revs.findIndex((r) => r.ref === revSel);
                 if (idx < 0) {
                   return (
-                    <div className="border rounded-none bg-white p-3 text-sm text-slate-600">
+                    <div className="border border-slate-200 rounded-xl bg-white p-3 text-sm text-slate-600">
                       Révision inconnue.
                     </div>
                   );
                 }
                 if (idx === 0) {
                   return (
-                    <div className="border rounded-none bg-white p-3 text-sm text-slate-600">
+                    <div className="border border-slate-200 rounded-xl bg-white p-3 text-sm text-slate-600">
                       Première révision : pas de comparaison
                       disponible.
                     </div>
@@ -1322,7 +1290,7 @@ export default function EventoPage() {
             {/* Modale nouveau client en mode historique */}
             {showNewCliente && (
               <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-                <div className="bg-white border rounded-none p-4 w-[420px] space-y-3">
+                <div className="bg-white border border-slate-200 rounded-xl p-4 w-[420px] space-y-3">
                   <h2 className="text-lg font-semibold">
                     Nuovo cliente
                   </h2>
@@ -1330,45 +1298,39 @@ export default function EventoPage() {
                   <label className="block text-sm">
                     Nome / Ragione sociale
                     <input
-                      className="mt-1 border rounded-none w-full px-2 py-1"
+                      className="mt-1 border border-slate-300 rounded-md w-full px-2 py-1 text-sm"
                       value={newCliNome}
-                      onChange={(e) =>
-                        setNewCliNome(e.target.value)
-                      }
+                      onChange={(e) => setNewCliNome(e.target.value)}
                     />
                   </label>
 
                   <label className="block text-sm">
                     Email
                     <input
-                      className="mt-1 border rounded-none w-full px-2 py-1"
+                      className="mt-1 border border-slate-300 rounded-md w-full px-2 py-1 text-sm"
                       value={newCliEmail}
-                      onChange={(e) =>
-                        setNewCliEmail(e.target.value)
-                      }
+                      onChange={(e) => setNewCliEmail(e.target.value)}
                     />
                   </label>
 
                   <label className="block text-sm">
                     Telefono
                     <input
-                      className="mt-1 border rounded-none w-full px-2 py-1"
+                      className="mt-1 border border-slate-300 rounded-md w-full px-2 py-1 text-sm"
                       value={newCliTel}
-                      onChange={(e) =>
-                        setNewCliTel(e.target.value)
-                      }
+                      onChange={(e) => setNewCliTel(e.target.value)}
                     />
                   </label>
 
                   <div className="flex justify-end gap-2 mt-3">
                     <button
-                      className="px-3 py-1 border rounded-none"
+                      className="px-3 py-1 rounded-full border border-slate-300 bg-white text-sm hover:bg-slate-50"
                       onClick={() => setShowNewCliente(false)}
                     >
                       Annulla
                     </button>
                     <button
-                      className="px-3 py-1 bg-black text-white rounded-none"
+                      className="px-3 py-1 rounded-full bg-black text-white text-sm hover:bg-slate-900"
                       onClick={creaNuovoCliente}
                     >
                       Salva

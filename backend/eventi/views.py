@@ -47,6 +47,22 @@ logger = logging.getLogger(__name__)
 # Helpers
 # -------------------------------------------------------------------
 
+# chemin : backend/eventi/views.py
+from django.http import JsonResponse
+
+def home(request):
+    """
+    Petite home JSON pour l'API.
+    Accessible sur /api/
+    """
+    return JsonResponse(
+        {
+            "name": "ArteLuce API",
+            "version": "1.0",
+            "status": "ok",
+        }
+    )
+
 def _money_s(x) -> str:
     try:
         q = Decimal(str(x or 0)).quantize(Decimal("0.01"))

@@ -1,8 +1,9 @@
-/* (chemin : /frontend/src/app/globals.css) */
+/* (chemin : /frontend/src/styles/globals.css) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* petites bases */
-html, body { height: 100%; }
-body { background-color: #f8fafc; } /* slate-50 */
+/* Toutes les pages : fond clair + texte foncé */
+body {
+  @apply min-h-screen bg-slate-50 text-slate-900 antialiased;
+}

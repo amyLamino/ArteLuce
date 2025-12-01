@@ -150,7 +150,7 @@ export default function ListaMensile() {
         </div>
       </div>
 
-      <div className="text-sm text-slate-500">
+      <div className="text-sm text-slate-900">
         Vue verticale par <b>giorno</b> × <b>8 locations</b>. Cliquez un
         évènement pour ouvrir sa fiche — ou cliquez un <b>slot vide</b> pour
         créer une <i>Offerta</i>. Les jours couverts par un évènement
@@ -170,8 +170,7 @@ export default function ListaMensile() {
           className="grid sticky top-0 z-10"
           style={{ gridTemplateColumns: "140px repeat(8, minmax(160px, 1fr))" }}
         >
-          <div className="bg-slate-100 px-2 py-2 font-semibold">Giorno</div>
-          {LOCCOLS.map((i) => (
+          <div className="bg-white px-2 py-2 font-semibold text-slate-900">Giorno</div>          {LOCCOLS.map((i) => (
             <div
               key={i}
               className="bg-slate-100 px-2 py-2 font-semibold text-center"
