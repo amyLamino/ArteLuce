@@ -475,6 +475,19 @@ class EventoViewSet(viewsets.ModelViewSet):
         ]
         tpl_path = next((str(p) for p in candidates if os.path.exists(p)), None)
 
+        # --- Define _date_filter once, used by both docxtpl and fallback python-docx ---
+        def _date_filter(value, fmt="%d/%m/%Y"):
+            if not value:
+                return ""
+            if isinstance(value, (datetime, date)):
+                d = value
+            else:
+                try:
+                    d = date.fromisoformat(str(value))
+                except Exception:
+                    return str(value)
+            return d.strftime(fmt)
+
         # ---------- docxtpl avec filtres date/datefmt ---------- #
         if DocxTemplate and tpl_path:
             tpl = DocxTemplate(tpl_path)
@@ -492,19 +505,6 @@ class EventoViewSet(viewsets.ModelViewSet):
                 from jinja2 import Environment
 
                 env = Environment(autoescape=True)
-
-            # --- filtres date / datefmt utilisés dans le modèle ---
-            def _date_filter(value, fmt="%d/%m/%Y"):
-                if not value:
-                    return ""
-                if isinstance(value, (datetime, date)):
-                    d = value
-                else:
-                    try:
-                        d = date.fromisoformat(str(value))
-                    except Exception:
-                        return str(value)
-                return d.strftime(fmt)
 
             env.filters["date"] = _date_filter
             env.filters["datefmt"] = _date_filter

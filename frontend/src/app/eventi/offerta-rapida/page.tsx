@@ -7,7 +7,7 @@
 
 import { useState, useEffect, useMemo, useRef, ReactNode } from "react";
 import dayjs from "dayjs";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import { api } from "@/lib/api";
 import { LocationSelector } from "@/components/LocationSelector";
@@ -284,12 +284,11 @@ function CartGrouped({
 
 export default function OffertaRapida() {
   const router = useRouter();
-  const search = useSearchParams();
   const { msg, setMsg } = useToast();
 
-  // si date= existe dans l’URL, on initialise dessus
-  const initialDate = search.get("date") ?? dayjs().format("YYYY-MM-DD");
-  const initialLoc = Number(search.get("loc") ?? 1);
+  // default values; we will hydrate from `window.location` on client side
+  const initialDate = dayjs().format("YYYY-MM-DD");
+  const initialLoc = 1;
 
   // Dates DA / A
   const [dateDa, setDateDa] = useState<string>(initialDate);
@@ -370,6 +369,18 @@ export default function OffertaRapida() {
   // Vider le panier au chargement
   useEffect(() => {
     clear();
+  }, []);
+
+  // Read query params from window on client-side (avoids useSearchParams prerender issues)
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const d = sp.get("date");
+      const l = sp.get("loc");
+      if (d) setDateDa(d);
+      if (l) setLocationIndex(Number(l) || 1);
+    } catch {}
   }, []);
 
   // Charger brouillon

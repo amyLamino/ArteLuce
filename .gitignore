@@ -16,3 +16,12 @@ build/
 
 # Environment variables
 .env
+
+# Docker volumes and databases
+backend/db.sqlite3
+backend/db.sqlite3-shm
+backend/db.sqlite3-wal
+backend/media/
+frontend/.next/
+.docker/
+

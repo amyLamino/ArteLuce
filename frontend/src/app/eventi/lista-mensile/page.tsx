@@ -253,8 +253,8 @@ export default function ListaMensile() {
                           ev.stock_tot_dispon != null) && (
                           <div className="mt-0.5">
                             <EventStockBadge
-                              scortaTot={ev.stock_tot_scorta}
-                              disponTot={ev.stock_tot_dispon}
+                              total_scorta={ev.stock_tot_scorta ?? undefined}
+                              total_free={ev.stock_tot_dispon ?? undefined}
                               label="Magazzino"
                             />
                           </div>

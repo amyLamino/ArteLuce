@@ -10,8 +10,6 @@ export default function EventiIndex() {
       <p>Scegli un’azione :</p>
 
       <div className="flex gap-2">
-
-        {/* Bouton Offerta Rapida */}
         <Link
           href="/eventi/new"
           className="px-3 py-2 border rounded-none bg-blue-600 text-white"
@@ -19,32 +17,15 @@ export default function EventiIndex() {
           Offerta rapida
         </Link>
 
-        {/* Bouton Calendario */}
-        <Link
-          href="/calendario"
-          className="px-3 py-2 border rounded-none"
-        >
+        <Link href="/calendario" className="px-3 py-2 border rounded-none">
           Calendario
         </Link>
+      </div>
 
+      <div className="mt-4 text-sm text-slate-600">
+        La lista degli eventi viene visualizzata nella pagina Calendario o nella
+        vista specifica dell'evento. Questa pagina funge da indice minimale.
       </div>
-      {events.map((ev) => (
-        <tr key={ev.id}>
-          <td className="px-2 py-1">
-            <div className="flex items-center gap-1">
-              <span className="font-medium">{ev.titolo}</span>
-              <EventoMultiDayPill evento={ev} />
-            </div>
-            <div className="text-xs text-slate-500">
-              {ev.data_evento_da ?? ev.data_evento}{" "}
-              {ev.data_evento_a && ev.data_evento_a !== ev.data_evento_da
-                ? ` → ${ev.data_evento_a}`
-                : null}
-            </div>
-          </td>
-          {/* ...autres colonnes... */}
-        </tr>
-      ))}
-      </div>
-    );
+    </div>
+  );
 }

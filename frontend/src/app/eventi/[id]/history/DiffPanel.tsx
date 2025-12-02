@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { DiffResult, Snap, diffRevisions } from "@/lib/revisions/diff";
-import DiffPanel from "./DiffPanel";
 
 function toSnap(raw: any): Snap {
   return {
@@ -39,7 +38,7 @@ export default function DiffPanel({ id, prevRef, curRef }:{
         api.get(`/eventi/${id}/revisions/${curRef}`).then(r => toSnap(r.data)),
       ]);
       if (!stop) setDiff(diffRevisions(a, b));
-      console.debug("[history] diff ready", { prevRef, curRef, a, b }); // <— trace visible en console
+      console.debug("[history] diff ready", { prevRef, curRef, a, b });
     })();
     return () => { stop = true; };
   }, [id, prevRef, curRef]);
