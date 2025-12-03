@@ -4,14 +4,6 @@ on:
   push:
     branches:
       - feat/docker-monolithic-multicontainer-fix
-    paths:
-      - 'Dockerfile.monolithic'
-      - 'next.config.monolithic.js'
-      - 'nginx.conf'
-      - 'supervisord.conf'
-      - 'frontend/**'
-      - 'backend/**'
-      - '.github/workflows/build-monolithic.yml'
   workflow_dispatch:
 
 env:
