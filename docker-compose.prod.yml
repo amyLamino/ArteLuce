@@ -2,8 +2,6 @@ services:
   backend:
     image: ghcr.io/amylamino/arteluce-backend:latest
     container_name: arteluce-backend
-    ports:
-      - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=backend.settings
@@ -17,8 +15,9 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_BASE=http://localhost:8000/api
-      - NEXT_PUBLIC_API_URL=http://localhost:8000/api
+      # Do not override NEXT_PUBLIC_API_* here so frontend built image
+      # will use the internal backend service URL baked into the image
+      # (it defaults to http://backend:8000/api in the Dockerfile)
     depends_on:
       - backend
     restart: unless-stopped
