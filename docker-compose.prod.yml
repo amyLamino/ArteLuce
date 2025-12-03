@@ -1,9 +1,6 @@
 services:
   backend:
-    build:
-      context: .
-      dockerfile: backend/Dockerfile
-    image: arteluce-backend:prod
+    image: ghcr.io/amylamino/arteluce-backend:latest
     container_name: arteluce-backend
     ports:
       - "8000:8000"
@@ -11,22 +8,21 @@ services:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=backend.settings
     restart: unless-stopped
+    pull_policy: always
 
   frontend:
-    build:
-      context: .
-      dockerfile: frontend/Dockerfile
-    image: arteluce-frontend:prod
+    image: ghcr.io/amylamino/arteluce-frontend:latest
     container_name: arteluce-frontend
     ports:
       - "3000:3000"
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
       - NEXT_PUBLIC_API_BASE=http://localhost:8000/api
       - NEXT_PUBLIC_API_URL=http://localhost:8000/api
     depends_on:
       - backend
     restart: unless-stopped
+    pull_policy: always
 
 networks:
   default:
