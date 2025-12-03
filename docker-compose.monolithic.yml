@@ -5,7 +5,7 @@ services:
     image: ghcr.io/amylamino/arteluce:monolithic-latest
     container_name: arteluce-monolithic
     ports:
-      - "80:80"
+      - "8088:80"
     environment:
       - PYTHONUNBUFFERED=1
       - DJANGO_SETTINGS_MODULE=backend.settings
