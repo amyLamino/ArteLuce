@@ -12,8 +12,10 @@ COPY frontend/ ./
 # Use monolithic config to ignore TS build errors (allows build to complete)
 COPY next.config.monolithic.js ./next.config.js
 
-ENV NEXT_PUBLIC_API_BASE=/api
-ENV NEXT_PUBLIC_API_URL=/api
+# Default API endpoint for multi-container deployments (internal Docker network)
+# Use the backend service name so frontend can call backend directly from container
+ENV NEXT_PUBLIC_API_BASE=http://backend:8000/api
+ENV NEXT_PUBLIC_API_URL=http://backend:8000/api
 RUN npm run build
 
 # Production image
