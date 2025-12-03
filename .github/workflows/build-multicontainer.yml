@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feat/docker-monolithic-multicontainer-fix
   workflow_dispatch:
 
 env:
