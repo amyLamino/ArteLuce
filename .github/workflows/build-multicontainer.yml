@@ -4,12 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'backend/**'
-      - 'frontend/**'
-      - 'backend/Dockerfile'
-      - 'frontend/Dockerfile'
-      - '.github/workflows/build-multicontainer.yml'
   workflow_dispatch:
 
 env:
@@ -40,11 +34,15 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract repo owner
+        shell: bash
+        run: echo "REPO_OWNER=$(echo ${GITHUB_REPOSITORY_OWNER} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Extract metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
+          images: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}
           tags: |
             type=ref,event=branch
             type=semver,pattern={{version}}
@@ -66,4 +64,4 @@ jobs:
         run: |
           echo "✅ ${{ matrix.service }} image built and pushed successfully!"
           echo ""
-          echo "Image: ${{ env.REGISTRY }}/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}:latest"
+          echo "Image: ${{ env.REGISTRY }}/${{ env.REPO_OWNER }}/${{ env.IMAGE_NAME }}-${{ matrix.service }}:latest"
