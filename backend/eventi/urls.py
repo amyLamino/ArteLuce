@@ -6,6 +6,8 @@ from rest_framework.routers import DefaultRouter
 from .views_catalogo import CatalogoSearch
 from .views_calendario import LocationCalendarView
 from . import views_export
+from .views import home
+from .views_auth import LoginView, MeView  # ← AJOUT
 
 from .views import (
     # ViewSets
@@ -42,8 +44,13 @@ router.register(r"eventi", EventoViewSet, basename="eventi")   # ✅ un seul reg
 
 
 urlpatterns = [
+    path("", home, name="home"),
     # ---------- CRUD génériques (ViewSets) ----------
     path("", include(router.urls)),
+
+    # ---------- AUTH ----------
+    path("auth/login", LoginView.as_view(), name="auth-login"),
+    path("auth/me", MeView.as_view(), name="auth-me"),
 
     # ---------- LISTA MENSILE / CALENDARIO ----------
     # utilisé par la liste mensile : /api/eventi/mese?year=YYYY&month=M

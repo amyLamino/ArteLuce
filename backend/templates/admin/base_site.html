@@ -1,0 +1,29 @@
+{# chemin : backend/templates/admin/base_site.html #}
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block title %}Amministrazione ArteLuce{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name">
+    <a href="{% url 'admin:index' %}">Amministrazione ArteLuce</a>
+  </h1>
+{% endblock %}
+
+{% block userlinks %}
+  {# Lien perso vers le FRONTEND #}
+  <a href="http://localhost:3000/" target="_blank">
+    {% translate "Visualizza il sito" %}
+  </a>
+  /
+  {# Liens standard : changer mot de passe / logout #}
+  {% if has_permission %}
+    <a href="{% url 'admin:password_change' %}">
+      {% translate "Modifica password" %}
+    </a>
+    /
+    <a href="{% url 'admin:logout' %}">
+      {% translate "Esci" %}
+    </a>
+  {% endif %}
+{% endblock %}
