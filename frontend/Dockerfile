@@ -1,22 +1,32 @@
-FROM node:21-alpine
+FROM node:21-alpine AS builder
 
-WORKDIR /app
+WORKDIR /frontend
 
-# Copy only package files first (for better layer caching)
+# Copy package files and install dependencies (including dev)
 COPY frontend/package*.json ./
-
-# Install dependencies
 RUN npm ci
 
-# Copy source code
+# Copy source and build
 COPY frontend/ ./
+ENV NEXT_PUBLIC_API_BASE=/api
+ENV NEXT_PUBLIC_API_URL=/api
+RUN npm run build
 
-# Ensure scripts are executable
-RUN chmod -R a+x node_modules/.bin
+# Production image
+FROM node:21-alpine AS runner
+WORKDIR /app
 
-# Expose port
+# Copy built frontend from builder
+COPY --from=builder /frontend/.next /app/.next
+COPY --from=builder /frontend/public /app/public
+COPY frontend/package*.json /app/
+
+# Install only production dependencies
+RUN npm ci --omit=dev
+
 EXPOSE 3000
 
-# Run dev server (same as npm run dev locally)
-# This avoids the build step which is causing issues in Docker
-CMD ["npm", "run", "dev", "--", "-H", "0.0.0.0"]
+ENV NODE_ENV=production
+
+# Start Next.js in production mode
+CMD ["npm", "start"]
