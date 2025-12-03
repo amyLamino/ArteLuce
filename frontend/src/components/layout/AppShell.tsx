@@ -5,6 +5,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 type AppShellProps = {
   title: string;
@@ -13,18 +14,28 @@ type AppShellProps = {
 
 const NAV_ITEMS = [
   { href: "/sinottico", label: "Sinottico" },
-  { href: "/eventi", label: "Eventi" },
   { href: "/calendario", label: "Calendario" },
   { href: "/magazzino", label: "Magazzino" },
-  { href: "/catalogo", label: "Catalogo" },
+  { href: "/eventi", label: "Eventi" },
+  { href: "/anagrafe", label: "Anagrafe" },
 ];
+
+function ClientYear() {
+  const [year, setYear] = useState<string>("");
+
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString());
+  }, []);
+
+  return <>{year}</>;
+}
 
 export function AppShell({ title, children }: AppShellProps) {
   const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-slate-200 text-slate-900 flex">
-      {/* SIDEBAR : plus claire & plus large */}
+      {/* SIDEBAR */}
       <aside className="hidden md:flex flex-col w-72 bg-white border-r border-slate-200 px-6 py-6 gap-6 shadow-xl">
         <div className="space-y-1">
           <div className="text-[10px] uppercase tracking-[0.25em] text-slate-500">
@@ -57,11 +68,11 @@ export function AppShell({ title, children }: AppShellProps) {
         </nav>
 
         <div className="mt-auto text-[11px] text-slate-500">
-          © {new Date().getFullYear()} ArteLuce
+          © <ClientYear /> ArteLuce
         </div>
       </aside>
 
-      {/* CONTENU PRINCIPAL : plus large, fond clair */}
+      {/* CONTENU PRINCIPAL */}
       <div className="flex-1 flex flex-col">
         {/* Topbar */}
         <header className="h-14 border-b border-slate-200 bg-white/80 backdrop-blur flex items-center justify-between px-6 md:px-10">
@@ -74,9 +85,8 @@ export function AppShell({ title, children }: AppShellProps) {
           </div>
         </header>
 
-        {/* Zone de contenu plus large */}
+        {/* Contenu */}
         <main className="flex-1 px-6 md:px-10 py-5 md:py-8 bg-slate-100">
-          {/* max-w plus grand pour que le dashboard occupe plus de largeur */}
           <div className="max-w-7xl mx-auto">{children}</div>
         </main>
       </div>

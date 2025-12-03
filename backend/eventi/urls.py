@@ -2,13 +2,13 @@
 
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-
+from .views_stats import StatsMeseView
 from .views_catalogo import CatalogoSearch
 from .views_calendario import LocationCalendarView
 from . import views_export
 from .views import home
 from .views_auth import LoginView, MeView  # ← AJOUT
-
+from .views import api_login
 from .views import (
     # ViewSets
     ClienteViewSet,
@@ -44,9 +44,13 @@ router.register(r"eventi", EventoViewSet, basename="eventi")   # ✅ un seul reg
 
 
 urlpatterns = [
+
+
     path("", home, name="home"),
     # ---------- CRUD génériques (ViewSets) ----------
     path("", include(router.urls)),
+
+    path("login", api_login, name="api-login"),
 
     # ---------- AUTH ----------
     path("auth/login", LoginView.as_view(), name="auth-login"),
@@ -126,4 +130,6 @@ urlpatterns = [
         views_export.PreventivoDocxView.as_view(),
         name="evento-preventivo-docx",
     ),
+
+    path("stats/mese", StatsMeseView.as_view(), name="stats-mese"),
 ]

@@ -531,7 +531,7 @@ export default function MagazzinoPage() {
   const [q, setQ] = usePersistentState("magazzino:q", "");
   const [cat, setCat] = usePersistentState("magazzino:cat", "");
   const [sub, setSub] = usePersistentState("magazzino:sub", "");
-  const [day, setDay] = usePersistentState(
+  const [day, setDay] = usePersistentState<string>(
     "magazzino:day",
     dayjs().format("YYYY-MM-DD"),
   );
@@ -542,7 +542,7 @@ export default function MagazzinoPage() {
   const [detOpen, setDetOpen] = useState(false);
   const [detMat, setDetMat] = useState<Mat | null>(null);
 
-  // Etats pour colonnes dynamiques
+  // États pour colonnes dynamiques
   const [nKmMap, setNKm] = useState<Record<number, number>>({});
   const [eurKmMap, setEurKm] = useState<Record<number, number>>({});
   const [nOreMap, setNOre] = useState<Record<number, number>>({});
@@ -629,7 +629,9 @@ export default function MagazzinoPage() {
     for (const id of Array.from(selected)) {
       try {
         await api.delete(`/materiali/${id}/`);
-      } catch {}
+      } catch {
+        // ignore
+      }
     }
     setMsg("Elementi eliminati.");
     refresh();
@@ -766,7 +768,7 @@ export default function MagazzinoPage() {
               <input
                 type="file"
                 className="text-xs md:text-sm"
-                onChange={(e) => setFile(e.target.files?.[0])}
+                onChange={(e) => setFile(e.target.files?.[0] ?? undefined)}
               />
               <button
                 className="px-3 py-1.5 rounded-xl border border-slate-300 bg-white text-xs md:text-sm hover:bg-slate-50"
