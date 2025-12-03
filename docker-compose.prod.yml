@@ -1,4 +1,18 @@
 services:
+  nginx-proxy:
+    image: nginx:1.25-alpine
+    container_name: arteluce-nginx
+    volumes:
+      - ./nginx-m.conf:/etc/nginx/conf.d/default.conf:ro
+    ports:
+      - "80:80"
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - default
+    restart: unless-stopped
+
   backend:
     image: ghcr.io/amylamino/arteluce-backend:latest
     container_name: arteluce-backend
@@ -11,8 +25,8 @@ services:
   frontend:
     image: ghcr.io/amylamino/arteluce-frontend:latest
     container_name: arteluce-frontend
-    ports:
-      - "3000:3000"
+    #ports:
+    #  - "3000:3000"
     environment:
       - NODE_ENV=production
       # Do not override NEXT_PUBLIC_API_* here so frontend built image
