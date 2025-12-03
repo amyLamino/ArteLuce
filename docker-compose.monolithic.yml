@@ -1,17 +1,27 @@
-version: '3.8'
+version: '3.9'
 
 services:
-  app:
-    build:
-      context: .
-      dockerfile: Dockerfile.monolithic
+  monolithic:
+    image: ghcr.io/amylamino/arteluce:monolithic-${BRANCH_NAME:-feat-docker-monolithic-multicontainer-fix}
+    container_name: arteluce-monolithic
     ports:
-      - "8080:80"
-      - "8000:8000"  # Opzionale: per debug diretto Django
+      - "80:80"
     environment:
       - PYTHONUNBUFFERED=1
-      - DEBUG=False
+      - DJANGO_SETTINGS_MODULE=backend.settings
+      - NEXT_PUBLIC_API_BASE=/api
+      - NEXT_PUBLIC_API_URL=/api
     volumes:
       - ./backend/media:/app/backend/media
       - ./backend/db.sqlite3:/app/backend/db.sqlite3
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  default:
+    name: arteluce_net
