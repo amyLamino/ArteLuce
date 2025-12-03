@@ -95,12 +95,12 @@ export default function EventiIndex() {
             </Link>
           </div>
         </div>
+
         {err && (
           <div className="p-3 border border-rose-200 bg-rose-50 text-rose-700 rounded-2xl text-sm">
             {err}
           </div>
         )}
-
         {/* Tableau des événements */}
         <div className="rounded-2xl bg-white border border-slate-200 shadow-sm">
           <div className="px-4 py-3 flex items-center justify-between bg-slate-50 border-b border-slate-200">
