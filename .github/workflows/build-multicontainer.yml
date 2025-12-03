@@ -1,10 +1,9 @@
-name: Build & Push Multi-Container Images
+name: Build & Push Multi-Container Images (Feature Branch Only)
 
 on:
   push:
     branches:
-      - main
-      - feat/docker-monolithic-multicontainer-fix
+      - feat/docker-monolithic-multicontainer-fix  # Only trigger on feature branch
   workflow_dispatch:
 
 env:
