@@ -1,8 +1,8 @@
-/* chemin : /frontend/src/app/login/page.tsx */
+/* chemin : frontend/src/app/login/page.tsx */
 
 "use client";
 
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { api } from "@/lib/api";
@@ -13,6 +13,12 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [year, setYear] = useState<string>("");
+
+  // Pour éviter l’erreur d’hydration avec new Date()
+  useEffect(() => {
+    setYear(new Date().getFullYear().toString());
+  }, []);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -20,10 +26,14 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      // ⚠️ adapte l’URL au backend réel (ex: "/token" ou "/auth/login")
-      const res = await api.post("/login", { username, password });
+      // IMPORTANT : on utilise bien /auth/login
+      const res = await api.post("/auth/login", {
+        username,
+        password,
+      });
 
       const token: string | undefined = res.data?.token;
+
       if (token && typeof window !== "undefined") {
         window.localStorage.setItem("authToken", token);
       }
@@ -51,14 +61,16 @@ export default function LoginPage() {
                 className="object-contain drop-shadow-lg"
               />
             </div>
-            <h1 className="text-2xl font-semibold">Benvenuto nel pannello ARTE LUCE</h1>
+            <h1 className="text-2xl font-semibold">
+              Benvenuto nel pannello ARTE LUCE
+            </h1>
             <p className="text-sm text-brand-text/80 max-w-xs">
               Pianifica gli eventi, gestisci i clienti e controlla il magazzino
               da un’unica interfaccia pensata per il lavoro quotidiano.
             </p>
           </div>
           <p className="text-xs text-brand-text/70">
-            © {new Date().getFullYear()} Arte Luce — accesso riservato allo staff interno.
+            © {year} Arte Luce — accesso riservato allo staff interno.
           </p>
         </div>
 
@@ -66,7 +78,8 @@ export default function LoginPage() {
         <div className="bg-brand-card/90 p-8 md:p-10">
           <h2 className="mb-1 text-xl font-semibold">Accesso</h2>
           <p className="mb-6 text-xs text-brand-text/60">
-            Inserisci le credenziali aziendali per accedere al pannello gestionale.
+            Inserisci le credenziali aziendali per accedere al pannello
+            gestionale.
           </p>
 
           <form onSubmit={handleSubmit} className="space-y-4">

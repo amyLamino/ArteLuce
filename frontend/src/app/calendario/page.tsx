@@ -1,4 +1,4 @@
-/* (chemin : /frontend/src/app/calendario/page.tsx) */
+/* chemin : /frontend/src/app/calendario/page.tsx */
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -81,14 +81,21 @@ function isCoveredByMulti(ev: MensileItem, iso: string): boolean {
 export default function CalendarioPage() {
   const router = useRouter();
 
-  const [month, setMonth] = useState(dayjs().format("YYYY-MM"));
-  const [quickLoc, setQuickLoc] = usePersistentState<number>("cal:quickLoc", 1);
+  // mois courant par défaut (YYYY-MM)
+  const [month, setMonth] = useState<string>(() =>
+    dayjs().format("YYYY-MM"),
+  );
+
+  const [quickLoc, setQuickLoc] = usePersistentState<number>(
+    "cal:quickLoc",
+    1,
+  );
 
   const [rows, setRows] = useState<MensileItem[]>([]);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  /* redirection si non loggé, comme les autres pages */
+  // redirection si non loggé
   useEffect(() => {
     if (typeof window !== "undefined") {
       const token = window.localStorage.getItem("authToken");
@@ -98,6 +105,7 @@ export default function CalendarioPage() {
     }
   }, [router]);
 
+  // chargement des évènements du mois
   useEffect(() => {
     const d = dayjs(`${month}-01`);
     setLoading(true);
@@ -111,7 +119,7 @@ export default function CalendarioPage() {
 
   const calendarDays = useMemo(() => {
     const first = dayjs(`${month}-01`);
-    const offset = first.day(); // 0=dimanche
+    const offset = first.day(); // 0 = dimanche
     const start = first.subtract(offset, "day");
     return Array.from({ length: 42 }, (_, i) => start.add(i, "day"));
   }, [month]);
@@ -200,6 +208,14 @@ export default function CalendarioPage() {
               className="px-3 py-1.5 border border-slate-300 rounded-xl text-xs md:text-sm text-slate-800 bg-white hover:bg-slate-50"
             >
               Lista mensile →
+            </Link>
+
+            {/* 🔴 nouveau bouton vers la page Offerta rapida / Eventi */}
+            <Link
+              href="/eventi/offerta-rapida"
+              className="px-3 py-1.5 rounded-xl text-xs md:text-sm font-semibold bg-emerald-500 text-white hover:bg-emerald-400"
+            >
+              Offerta rapida →
             </Link>
           </div>
         </div>
