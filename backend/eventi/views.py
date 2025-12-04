@@ -47,6 +47,55 @@ logger = logging.getLogger(__name__)
 # Helpers
 # -------------------------------------------------------------------
 
+# chemin : backend/eventi/views.py
+from django.http import JsonResponse
+
+
+
+def home(request):
+    """
+    Petite home JSON pour l'API.
+    Accessible sur /api/
+    """
+    return JsonResponse(
+        {
+            "name": "ArteLuce API",
+            "version": "1.0",
+            "status": "ok",
+        }
+    )
+
+# ====== LOGIN API PER IL FRONTEND ARTE LUCE ======
+from django.contrib.auth import authenticate, login
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+@csrf_exempt
+def api_login(request):
+    if request.method != "POST":
+        return JsonResponse({"detail": "Method not allowed"}, status=405)
+
+    try:
+        data = json.loads(request.body.decode("utf-8"))
+    except Exception:
+        data = request.POST
+
+    username = data.get("username")
+    password = data.get("password")
+
+    user = authenticate(request, username=username, password=password)
+    if user is None:
+        return JsonResponse({"detail": "Invalid credentials"}, status=400)
+
+    # opzionale: solo account staff
+    if not user.is_staff:
+        return JsonResponse({"detail": "Not staff"}, status=403)
+
+    login(request, user)   # crea la sessione
+    return JsonResponse({"ok": True, "username": user.username})
+
+
 def _money_s(x) -> str:
     try:
         q = Decimal(str(x or 0)).quantize(Decimal("0.01"))

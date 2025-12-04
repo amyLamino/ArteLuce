@@ -28,6 +28,10 @@ class Cliente(Timestamped):
     def __str__(self):
         return f"{self.nome} ({self.external_id or 'n/a'})"
 
+    class Meta:
+        verbose_name = "Cliente"  # singular correct
+        verbose_name_plural = "Clienti"  # plural correc
+
 
 class Luogo(Timestamped):
     distanza_km_ar = models.DecimalField(max_digits=8, decimal_places=2, default=0)
@@ -52,6 +56,9 @@ class Luogo(Timestamped):
 
     def __str__(self):
         return self.nome
+    class Meta:
+        verbose_name = "Luogo"  # singular correct
+        verbose_name_plural = "Luoghi"  # plural correc
 
 
 # backend/eventi/models.py
@@ -93,6 +100,10 @@ class Materiale(models.Model):
 
     def __str__(self):
         return self.nome
+
+    class Meta:
+        verbose_name = "Materiale"  # singular correct
+        verbose_name_plural = "Materiali"  # plural correc
 
 class MaterialeSuggerito(models.Model):
     """Règle de suggestion: quand on ajoute `trigger`, proposer `suggested`."""
@@ -182,6 +193,10 @@ class Evento(Timestamped):
             models.Index(fields=["data_evento", "location_index"]),
         ]
 
+    class Meta:
+        verbose_name = "Evento"  # singular correct
+        verbose_name_plural = "Eventi"  # plural correc
+
     versione = models.IntegerField(default=0)
 
     def __str__(self):
@@ -202,6 +217,8 @@ class Evento(Timestamped):
             return Decimal("0")
 
 
+
+
 class RigaEvento(Timestamped):
     evento = models.ForeignKey(Evento, on_delete=models.CASCADE, related_name="righe")
     materiale = models.ForeignKey(Materiale, on_delete=models.PROTECT)
@@ -211,6 +228,11 @@ class RigaEvento(Timestamped):
     is_tecnico = models.BooleanField(default=False)
     is_trasporto = models.BooleanField(default=False)
     copertura_giorni = models.IntegerField(default=1)  # nb de jours bloqués (ex: 3)
+
+    class Meta:
+        verbose_name = "RigaEvento"  # singular correct
+        verbose_name_plural = "RigaEventi"  # plural correc
+
 
 
 class CalendarioSlot(Timestamped):
@@ -250,6 +272,10 @@ class Tecnico(models.Model):
 
     def __str__(self):
         return self.nome
+    class Meta:
+        verbose_name = "Tecnico"  # singular correct
+        verbose_name_plural = "Tecnici"  # plural correc
+
 
 class Mezzo(models.Model):
     targa = models.CharField(max_length=32, unique=True)
@@ -270,6 +296,10 @@ class Mezzo(models.Model):
 
     def __str__(self):
         return f"{self.targa} ({self.descrizione})"
+
+    class Meta:
+        verbose_name = "Mezzo"  # singular correct
+        verbose_name_plural = "Mezzi"  # plural correc
 
 
 from django.db import models
